@@ -383,13 +383,13 @@ class NovalnetServiceProvider extends ServiceProvider
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);	
 		$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
-			$this->getLogger(__METHOD__)->error('log', $paymentKey);
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
 			$bankDetails = json_decode($bank_details[0]->bankDetails);
 			if (!empty($bankDetails)) {
-			$this->getLogger(__METHOD__)->error('log1', $bankDetails);
 			$comments = '';
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('transfer_amount_text');
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details[0]->tid;
+			$comments .= PHP_EOL . $bankDetails->testmode;
+			$comments .= PHP_EOL . PHP_EOL . $paymentHelper->getTranslatedText('transfer_amount_text');
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('account_holder_novalnet') . $bankDetails->invoice_account_holder;
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('iban') . $bankDetails->invoice_iban;
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('bic') . $bankDetails->invoice_bic;
@@ -400,11 +400,12 @@ class NovalnetServiceProvider extends ServiceProvider
 			$comments .= PHP_EOL . PHP_EOL .$paymentHelper->getTranslatedText('any_one_reference_text');
 			$comments .= PHP_EOL. $paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $bank_details[0]->tid. PHP_EOL . $paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $bankDetails->product . '-' . $bank_details[0]->orderNo). PHP_EOL;
 			$comments .= PHP_EOL;
-			}
 			$orderPdfGenerationModel->advice = 'Novalnet Transaction Details:'. PHP_EOL . $comments;
+			}
+			
 			$document_type = $event->getDocType();
 	      	if ($document_type == 'invoice') {
-			$this->getLogger(__METHOD__)->error('log3', $document_type);
+			
 				$event->addOrderPdfGeneration($orderPdfGenerationModel); 
 			}
 	    }
