@@ -135,6 +135,7 @@ class PaymentService
     public function validateResponse()
     {
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
+	   $this->getLogger(__METHOD__)->error('re', $nnPaymentData);
 	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         
