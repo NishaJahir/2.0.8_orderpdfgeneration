@@ -388,7 +388,7 @@ class NovalnetServiceProvider extends ServiceProvider
 			if (!empty($bankDetails)) {
 			$comments = '';
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details[0]->tid;
-			$comments .= PHP_EOL . $bankDetails->testmode;
+			$comments .= PHP_EOL . $bankDetails->test_mode;
 			$comments .= PHP_EOL . PHP_EOL . $paymentHelper->getTranslatedText('transfer_amount_text');
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('account_holder_novalnet') . $bankDetails->invoice_account_holder;
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('iban') . $bankDetails->invoice_iban;
