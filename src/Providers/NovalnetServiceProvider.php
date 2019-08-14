@@ -390,15 +390,15 @@ class NovalnetServiceProvider extends ServiceProvider
 			$this->getLogger(__METHOD__)->error('log1', $bankDetails);
 			$comments = '';
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('transfer_amount_text');
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('account_holder_novalnet') . $bankDetails['invoice_account_holder'];
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('iban') . $bankDetails['invoice_iban'];
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('bic') . $bankDetails['invoice_bic'];
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('due_date') . $bankDetails['due_date'];
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('bank') . $bankDetails['bank'];
-			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('amount') . $bank_details[0]->amount . ' ' . $bankDetails['currency'];
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('account_holder_novalnet') . $bankDetails->invoice_account_holder;
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('iban') . $bankDetails->invoice_iban;
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('bic') . $bankDetails->invoice_bic;
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('due_date') . $bankDetails->due_date;
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('bank') . $bankDetails->bank;
+			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('amount') . $bank_details[0]->amount . ' ' . $bankDetails->currency;
 		
 			$comments .= PHP_EOL . PHP_EOL .$paymentHelper->getTranslatedText('any_one_reference_text');
-			$comments .= PHP_EOL. $paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $bank_details[0]->tid. PHP_EOL . $paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $bankDetails['product'] . '-' . $bank_details[0]->orderNo). PHP_EOL;
+			$comments .= PHP_EOL. $paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $bank_details[0]->tid. PHP_EOL . $paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $bankDetails->product . '-' . $bank_details[0]->orderNo). PHP_EOL;
 			$comments .= PHP_EOL;
 			}
 			$orderPdfGenerationModel->advice = 'Novalnet Transaction Details:'. PHP_EOL . $comments;
