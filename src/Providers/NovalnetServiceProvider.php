@@ -400,7 +400,7 @@ class NovalnetServiceProvider extends ServiceProvider
 			$comments .= PHP_EOL . PHP_EOL .$paymentHelper->getTranslatedText('any_one_reference_text');
 			$comments .= PHP_EOL. $paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $bank_details[0]->tid. PHP_EOL . $paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $bankDetails->product . '-' . $bank_details[0]->orderNo). PHP_EOL;
 			$comments .= PHP_EOL;
-			$orderPdfGenerationModel->advice = 'Novalnet Transaction Details:'. PHP_EOL . $comments;
+			$orderPdfGenerationModel->advice = $paymentHelper->getTranslatedText('novalnet_details'). PHP_EOL . $comments;
 			}
 			
 			$document_type = $event->getDocType();
