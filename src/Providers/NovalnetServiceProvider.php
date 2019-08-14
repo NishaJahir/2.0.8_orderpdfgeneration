@@ -385,6 +385,7 @@ class NovalnetServiceProvider extends ServiceProvider
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
 			$bankDetails = json_decode($bank_details[0]->bankDetails);
+			if (!empty($bankDetails)) {
 			$comments = '';
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('transfer_amount_text');
 			$comments .= PHP_EOL . $paymentHelper->getTranslatedText('account_holder_novalnet') . $bankDetails['invoice_account_holder'];
@@ -398,6 +399,7 @@ class NovalnetServiceProvider extends ServiceProvider
 			$comments .= PHP_EOL. $paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $bank_details[0]->tid. PHP_EOL . $paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $bankDetails['product'] . '-' . $bank_details[0]->orderNo). PHP_EOL;
 			$comments .= PHP_EOL;
 			$orderPdfGenerationModel->advice = 'Novalnet Transaction Details:'. PHP_EOL . $comments;
+			}
 			$document_type = $event->getDocType();
 	      	if ($document_type == 'invoice') {
 				$event->addOrderPdfGeneration($orderPdfGenerationModel); 
