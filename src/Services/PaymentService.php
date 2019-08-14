@@ -135,7 +135,7 @@ class PaymentService
     public function validateResponse()
     {
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
-
+	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         
         $nnPaymentData['order_no']       = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
@@ -151,7 +151,8 @@ class PaymentService
 				'due_date' => $nnPaymentData['due_date'],
 				'bank' => $this->paymentHelper->checkUtf8Character($nnPaymentData['invoice_bankname']) . ' ' . $this->paymentHelper->checkUtf8Character($nnPaymentData['invoice_bankplace']),
 				'currency' => $nnPaymentData['currency'],
-				'product' => $nnPaymentData['product']
+				'product' => $nnPaymentData['product'],
+				'test_mode' => !empty($nnPaymentData['test_mode']) ? $this->paymentHelper->getTranslatedText('test_order',$lang) : '0'
 				 ];
 		}
         $transactionData = [
