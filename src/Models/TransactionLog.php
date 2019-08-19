@@ -40,6 +40,7 @@ class TransactionLog extends Model
     public $tid;
     public $paymentName;
     public $bankDetails;
+    public $transactionDetails;
 
     /**
      * Returns table name to create during build
