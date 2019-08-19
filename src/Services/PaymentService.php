@@ -166,8 +166,8 @@ class PaymentService
             'ref_tid'          => $nnPaymentData['tid'],
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
-            'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0'
-	    'transaction_details' => !empty($transactionComments) ? $transactionComments : '0';
+            'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0',
+	    'transaction_details' => !empty($transactionComments) ? $transactionComments : '0'
         ];
 	    
 	    
