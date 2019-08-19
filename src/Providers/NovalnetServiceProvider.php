@@ -389,10 +389,8 @@ class NovalnetServiceProvider extends ServiceProvider
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
 			$bankDetails = json_decode($bank_details[0]->bankDetails);
 			if (!empty($bankDetails)) {
-				$comments = '';
-				$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details[0]->tid;
-				$comments .= PHP_EOL . $bankDetails->test_mode;
-				$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bankDetails);
+				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bankDetails, $lang);
+				$this->getLogger(__METHOD__)->error('we', $comments);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
 				$orderPdfGenerationModel->advice = $paymentHelper->getTranslatedText('novalnet_details'). PHP_EOL . $comments;
 			}
@@ -401,7 +399,7 @@ class NovalnetServiceProvider extends ServiceProvider
 			}
 		} 
 		} catch (\Exception $e) {
-                    $this->getLogger(__METHOD__)->error('Error loading payment', $e);
+                    $this->getLogger(__METHOD__)->error('Adding PDF comment failed for order' . $order->id , $e);
                 }
 	    } 
 	  );  
