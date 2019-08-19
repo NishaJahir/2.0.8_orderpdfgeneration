@@ -384,7 +384,7 @@ class NovalnetServiceProvider extends ServiceProvider
 		$document_type = $event->getDocType();
 		$payments = $paymentRepository->getPaymentsByOrderId($order->id);
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
-		$lang = strtoupper($sessionStorage->getLocaleSettings()->language);
+		$lang = $sessionStorage->getLocaleSettings()->language;
 		
 		$this->getLogger(__METHOD__)->error('language', $lang);
 		try {
