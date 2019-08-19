@@ -63,26 +63,20 @@ class NovalnetOrderConfirmationDataProvider
 						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
 					}
 					$orderId = (int) $payment->order['orderId'];
-					$database = pluginApp(DataBase::class);
-					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
 					$comment = '';
-					if (!empty($bank_details)) {	
-				
-				//Typecasting object to array
-				$bank_details = (array)($bank_details[0]);
-				
-				$bank_details['order_no'] = $bank_details['orderNo'];
-				
-				//Decoding the json as array
-				$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
-				//Merging the array
-				$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
-				//Unsetting the redundant key
-				unset($bank_details['bankDetails']);
-				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
+					$bank_details = $paymentService->getDatabaseValues($orderId);
+					if (in_array($bank_details['paymentName'], ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
+					$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
+					} else {
+						$comments = '';
+						$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details['tid'];
+						if(!empty($bank_details['test_mode'])) {
+						$comments .= PHP_EOL . $paymentHelper->getTranslatedText('test_order');    
+						}
+					}
 					
-						$comment .= (string) $comments;
-						$comment .= PHP_EOL;
+					$comment .= (string) $comments;
+					$comment .= PHP_EOL;
 					
 					}	
 					
