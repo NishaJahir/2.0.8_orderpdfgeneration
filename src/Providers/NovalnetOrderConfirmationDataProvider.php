@@ -62,7 +62,8 @@ class NovalnetOrderConfirmationDataProvider
 					$orderId = (int) $payment->order['orderId'];
 					$comment = '';
 					$bank_details = $paymentService->getDatabaseValues($orderId);
-					if (in_array($bank_details['paymentName'], ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
+					$paymentHelper->logger('re', $bank_details);
+					if (in_array($bank_details['paymentName'], ['novalnet_invoice', 'novalnet_prepayment'])) {
 					        $comments = '';
 						$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 					} else {
