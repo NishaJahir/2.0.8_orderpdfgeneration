@@ -64,16 +64,9 @@ class NovalnetOrderConfirmationDataProvider
 					$orderId = (int) $payment->order['orderId'];
 					$database = pluginApp(DataBase::class);
 					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
-					$paymentHelper->logger('details', $bank_details[0]->transactionDetails);
+					$orderComments = json_decode($bank_details[0]->transactionDetails);
+					$paymentHelper->logger('details', $transaction_details);
 					
-					$authHelper = pluginApp(AuthHelper::class);
-					$orderComments = $authHelper->processUnguarded(
-							function () use ($orderId) {
-								$commentsObj = pluginApp(CommentRepositoryContract::class);
-								$commentsObj->setFilters(['referenceType' => 'order', 'referenceValue' => $orderId]);
-								return $commentsObj->listComments();
-							}
-					);
 					$comment = '';
 					foreach($orderComments as $data)
 					{
