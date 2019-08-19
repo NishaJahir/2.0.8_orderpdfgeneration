@@ -136,6 +136,9 @@ class PaymentService
     {
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
 	   $this->getLogger(__METHOD__)->error('re', $nnPaymentData);
+	    $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
+			$this->sessionStorage->getPlugin()->setValue('customerWish', null);
+            $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData);
 	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         
@@ -164,6 +167,7 @@ class PaymentService
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
             'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0'
+	    'transaction_details' => !empty($transactionComments) ? $transactionComments : '0';
         ];
 	    
 	    
@@ -218,12 +222,6 @@ class PaymentService
             $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
 			$this->sessionStorage->getPlugin()->setValue('customerWish', null);
             $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($requestData);
-	    $transactionData = [
-		    'order_no'         => $requestData['order_no'],
-		    'transaction_details' => $transactionComments
-		    ]
-		    
-	    $this->transactionLogData->saveTransaction($transactionData);
 		
             $this->paymentHelper->createPlentyPayment($requestData);
             $this->paymentHelper->updateOrderStatus((int)$requestData['order_no'], $requestData['order_status']);
