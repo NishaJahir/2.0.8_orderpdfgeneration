@@ -26,6 +26,9 @@ use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Frontend\Services\AccountService;
 use Novalnet\Constants\NovalnetConstants;
 use Novalnet\Services\TransactionService;
+use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
+use Plenty\Modules\Plugin\DataBase\Contracts\Query;
+use Novalnet\Models\TransactionLog;
 
 /**
  * Class PaymentService
@@ -916,5 +919,21 @@ class PaymentService
 			}
 		} 
 		return false;
+	}
+	
+	public function getDatabaseValues($orderId) {
+		$database = pluginApp(DataBase::class);
+		$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
+		if (!empty($bank_details)) {
+		//Typecasting object to array
+		$bank_details = (array)($bank_details[0]);
+		$bank_details['order_no'] = $bank_details['orderNo'];
+		//Decoding the json as array
+		$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
+		//Merging the array
+		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
+		//Unsetting the redundant key
+		unset($bank_details['bankDetails']);
+		}
 	}
 }
