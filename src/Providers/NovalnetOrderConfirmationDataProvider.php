@@ -46,7 +46,6 @@ class NovalnetOrderConfirmationDataProvider
 	{
 		$paymentHelper = pluginApp(PaymentHelper::class);
 		$sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
-		$dataBase = pluginApp(DataBase::class);
 		$order = $arg[0];
 		$barzhlentoken = '';
 		$barzahlenurl = '';
@@ -63,9 +62,10 @@ class NovalnetOrderConfirmationDataProvider
 						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
 					}
 					$orderId = (int) $payment->order['orderId'];
-					$bank_details = $dataBase->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
+					$database = pluginApp(DataBase::class);
+					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
 					$paymentHelper->logger('comments', $bank_details);
-					$orderComments = json_decode($bank_details);
+					
 					$authHelper = pluginApp(AuthHelper::class);
 					$orderComments = $authHelper->processUnguarded(
 							function () use ($orderId) {
