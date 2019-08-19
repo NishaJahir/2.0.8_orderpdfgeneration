@@ -161,7 +161,7 @@ class PaymentService
 	$customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
 	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
         $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
-	    
+	 $this->getLogger(__METHOD__)->error('check', $nnPaymentData);
         $transactionData = [
             'amount'           => $nnPaymentData['amount'] * 100,
             'callback_amount'  => $nnPaymentData['amount'] * 100,
@@ -277,6 +277,7 @@ class PaymentService
 			
 			if(in_array($requestData['payment_method'], ['novalnet_invoice','novalnet_prepayment']))
 			{
+				$this->getLogger(__METHOD__)->error('name', $requestData['payment_method']);
 				$comments .= PHP_EOL . $this->getInvoicePrepaymentComments($requestData);
 			}
 			else if($requestData['payment_id'] == '59')
