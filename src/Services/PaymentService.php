@@ -147,7 +147,7 @@ class PaymentService
 	 $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
 	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
         $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
-	
+	$nnPaymentData['comment'] = $transactionComments;
 	    
 	    $this->executePayment($nnPaymentData);
         
@@ -173,7 +173,7 @@ class PaymentService
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
             'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0',
-	    'transaction_details' => json_encode($transactionComments)
+	    'transaction_details' => $nnPaymentData['comment']
         ];
 	   
 	    
