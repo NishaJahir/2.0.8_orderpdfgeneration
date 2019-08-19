@@ -143,7 +143,13 @@ class PaymentService
         $nnPaymentData['order_no']       = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
-        $this->executePayment($nnPaymentData);
+        
+	 $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
+	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
+        $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
+	 $this->getLogger(__METHOD__)->error('check', $nnPaymentData);
+	    
+	    $this->executePayment($nnPaymentData);
         
 		if (in_array($nnPaymentData['key'], ['27','41'])) {  
 			$bank_details = [
@@ -158,10 +164,7 @@ class PaymentService
 				 ];
 		}
 	    
-	$customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
-	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
-        $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
-	 $this->getLogger(__METHOD__)->error('check', $nnPaymentData);
+	
         $transactionData = [
             'amount'           => $nnPaymentData['amount'] * 100,
             'callback_amount'  => $nnPaymentData['amount'] * 100,
@@ -170,7 +173,7 @@ class PaymentService
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
             'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0',
-	    'transaction_details' => !empty($transactionComments) ? $transactionComments : '0'
+	    'transaction_details' => $transactionComments
         ];
 	   
 	    
