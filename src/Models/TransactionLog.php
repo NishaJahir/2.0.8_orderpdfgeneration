@@ -29,7 +29,7 @@ use Plenty\Modules\Plugin\DataBase\Contracts\Model;
  * @property string  $tid
  * @property string  $paymentName
   * @property string  $bankDetails
-   * @property string  $transactionDetails
+   * @property string:255  $transactionDetails
  */
 class TransactionLog extends Model
 {
