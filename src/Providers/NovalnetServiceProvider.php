@@ -377,7 +377,7 @@ class NovalnetServiceProvider extends ServiceProvider
 	
 	// Listen for the document generation event
 	    $eventDispatcher->listen(OrderPdfGenerationEvent::class,
-	    function (OrderPdfGenerationEvent $event) use ($dataBase, $paymentHelper, $paymentService, $paymentRepository, $sessionStorage) {
+	    function (OrderPdfGenerationEvent $event) use ($dataBase, $paymentHelper, $paymentService, $paymentRepository) {
 		    
 		/** @var Order $order */ 
 		$order = $event->getOrder();
@@ -387,15 +387,18 @@ class NovalnetServiceProvider extends ServiceProvider
 		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
+			$this->getLogger(__METHOD__)->error('test', $bank_details);
 			if (!empty($bank_details)) {	
+				$bank_details['order_no'] = $bank_details['orderNo'];
 				//Typecasting object to array
 				$bank_details = (array)($bank_details[0]);
 				//Decoding the json as array
 				$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'] );
 				//Merging the array
-				$bank_details = array_merge($bank_details, $bank_details['bankDetails']);
+				$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
 				//Unsetting the redundant key
 				unset($bank_details['bankDetails']);
+				$this->getLogger(__METHOD__)->error('new', $bank_details);
 				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
 				$orderPdfGenerationModel->advice = $paymentHelper->getTranslatedText('novalnet_details'). PHP_EOL . $comments;
