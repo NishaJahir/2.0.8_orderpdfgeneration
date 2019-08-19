@@ -297,8 +297,9 @@ class PaymentService
      * @param array $requestData
      * @return string
      */
-    public function getInvoicePrepaymentComments($requestData, $lang)
+    public function getInvoicePrepaymentComments($requestData)
     {     
+	$lang = $requestData->language;
 	$comments = '';
 	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid', $lang) . $requestData[0]->tid;
 	if(!empty($requestData->test_mode)) {
