@@ -32,6 +32,7 @@ use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Constants\NovalnetConstants;
 
+
 /**
  * Class PaymentHelper
  *
@@ -316,6 +317,8 @@ class PaymentHelper
 		} catch (\Exception $e) {
 			$this->getLogger(__METHOD__)->error('Novalnet::createOrderComments', $e);
 		}
+		$mail = pluginApp(\Plenty\Modules\Helper\AutomaticEmail\Models\AutomaticEmail::class);
+		$this->getLogger(__METHOD__)->error('mail', $mail);
 	}
 
 	/**
