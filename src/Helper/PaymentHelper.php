@@ -304,7 +304,6 @@ class PaymentHelper
 	public function createOrderComments($orderId, $text)
 	{
 		try {
-			$this->getLogger(__METHDO__)->error('try', 'executed');
 			$authHelper = pluginApp(AuthHelper::class);
 			$authHelper->processUnguarded(
 					function () use ($orderId, $text) {
