@@ -23,6 +23,9 @@ use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use \Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
+use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
+use Plenty\Modules\Plugin\DataBase\Contracts\Query;
+use Novalnet\Models\TransactionLog;
 
 /**
  * Class NovalnetOrderConfirmationDataProvider
@@ -59,6 +62,8 @@ class NovalnetOrderConfirmationDataProvider
 						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
 					}
 					$orderId = (int) $payment->order['orderId'];
+					$bank_details = $dataBase->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
+					$paymentHelper->logger('order', $bank_details);
 					$authHelper = pluginApp(AuthHelper::class);
 					$orderComments = $authHelper->processUnguarded(
 							function () use ($orderId) {
