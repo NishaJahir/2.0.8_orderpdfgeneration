@@ -303,7 +303,12 @@ class PaymentHelper
 	 */
 	public function createOrderComments($orderId, $text)
 	{
+		$mail = pluginApp(Plenty\Modules\Helper\AutomaticEmail\Models\AutomaticEmail::class);
+		$this->getLogger(__METHOD__)->error('mail', $mail);
+		$sendmail = pluginApp(Plenty\Modules\Plugin\Events\PluginSendMail::class);
+		$this->getLogger(__METHOD__)->error('test', $sendmail);
 		try {
+			$this->getLogger(__METHDO__)->error('try', 'executed');
 			$authHelper = pluginApp(AuthHelper::class);
 			$authHelper->processUnguarded(
 					function () use ($orderId, $text) {
@@ -317,8 +322,7 @@ class PaymentHelper
 		} catch (\Exception $e) {
 			$this->getLogger(__METHOD__)->error('Novalnet::createOrderComments', $e);
 		}
-		$mail = pluginApp(\Plenty\Modules\Helper\AutomaticEmail\Models\AutomaticEmail::class);
-		$this->getLogger(__METHOD__)->error('mail', $mail);
+		
 	}
 
 	/**
