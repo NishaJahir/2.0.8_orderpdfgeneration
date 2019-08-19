@@ -26,7 +26,7 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 use Novalnet\Models\TransactionLog;
-
+use Novalnet\Services\PaymentService;
 /**
  * Class NovalnetOrderConfirmationDataProvider
  *
@@ -45,6 +45,7 @@ class NovalnetOrderConfirmationDataProvider
 	public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, $arg)
 	{
 		$paymentHelper = pluginApp(PaymentHelper::class);
+		$paymentService = pluginApp(PaymentHelper::class);
 		$sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
 		$order = $arg[0];
 		$barzhlentoken = '';
@@ -64,15 +65,27 @@ class NovalnetOrderConfirmationDataProvider
 					$orderId = (int) $payment->order['orderId'];
 					$database = pluginApp(DataBase::class);
 					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
-					$orderComments = json_decode($bank_details[0]->transactionDetails);
-					$paymentHelper->logger('12345', $bank_details);
-					$paymentHelper->logger('789', $bank_details[0]->transactionDetails);
 					$comment = '';
-					foreach($orderComments as $data)
-					{
+					if (!empty($bank_details)) {	
+				
+				//Typecasting object to array
+				$bank_details = (array)($bank_details[0]);
+				
+				$bank_details['order_no'] = $bank_details['orderNo'];
+				
+				//Decoding the json as array
+				$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
+				//Merging the array
+				$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
+				//Unsetting the redundant key
+				unset($bank_details['bankDetails']);
+				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
+				$data->text = 	$comments;	
 						$comment .= (string)$data->text;
 						$comment .= PHP_EOL;
-					}
+					
+					}	
+					
 
 				  $payment_type = (string)$paymentHelper->getPaymentKeyByMop($payment->mopId);
 				  return $twig->render('Novalnet::NovalnetOrderHistory', ['comments' => html_entity_decode($comment),'barzahlentoken' => $barzhlentoken,'payment_type' => html_entity_decode($payment_type),'barzahlenurl' => $barzahlenurl]);
