@@ -136,9 +136,7 @@ class PaymentService
     {
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
 	   $this->getLogger(__METHOD__)->error('re', $nnPaymentData);
-	    $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
-			$this->sessionStorage->getPlugin()->setValue('customerWish', null);
-            $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData);
+	    
 	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         
@@ -159,6 +157,11 @@ class PaymentService
 				'test_mode' => !empty($nnPaymentData['test_mode']) ? $this->paymentHelper->getTranslatedText('test_order',$lang) : '0'
 				 ];
 		}
+	    
+	$customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
+	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
+        $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
+	    
         $transactionData = [
             'amount'           => $nnPaymentData['amount'] * 100,
             'callback_amount'  => $nnPaymentData['amount'] * 100,
@@ -169,7 +172,7 @@ class PaymentService
             'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0',
 	    'transaction_details' => !empty($transactionComments) ? $transactionComments : '0'
         ];
-	    
+	   
 	    
 	if(in_array($nnPaymentData['payment_id'], ['27', '59']) || (in_array($nnPaymentData['tid_status'], ['85','86','90'])))
             $transactionData['callback_amount'] = 0;	
