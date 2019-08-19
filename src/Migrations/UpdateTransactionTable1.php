@@ -21,7 +21,7 @@ use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
 /**
  * Class CreateTransactionTable
  */
-class UpdateTransactionTable1
+class UpdateTransactionTable2
 {
     /**
      * Create transaction log table
