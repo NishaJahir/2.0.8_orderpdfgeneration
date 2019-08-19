@@ -386,7 +386,7 @@ class NovalnetServiceProvider extends ServiceProvider
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
 		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
-			        $bank_details = $paymentService->getDatabaseValues($orderId);
+			        $bank_details = $paymentService->getDatabaseValues($order->id);
 				$comments = '';
 				$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
