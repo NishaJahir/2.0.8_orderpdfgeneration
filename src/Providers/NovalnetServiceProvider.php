@@ -389,11 +389,14 @@ class NovalnetServiceProvider extends ServiceProvider
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
 			$this->getLogger(__METHOD__)->error('test', $bank_details);
 			if (!empty($bank_details)) {	
-				$bank_details['order_no'] = $bank_details['orderNo'];
+				
 				//Typecasting object to array
 				$bank_details = (array)($bank_details[0]);
+				
+				$bank_details['order_no'] = $bank_details['orderNo'];
+				
 				//Decoding the json as array
-				$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'] );
+				$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
 				//Merging the array
 				$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
 				//Unsetting the redundant key
