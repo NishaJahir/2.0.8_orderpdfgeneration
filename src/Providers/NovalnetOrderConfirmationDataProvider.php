@@ -80,8 +80,8 @@ class NovalnetOrderConfirmationDataProvider
 				//Unsetting the redundant key
 				unset($bank_details['bankDetails']);
 				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
-				$data->text = 	$comments;	
-						$comment .= (string)$data->text;
+					
+						$comment .= (string) $comments;
 						$comment .= PHP_EOL;
 					
 					}	
