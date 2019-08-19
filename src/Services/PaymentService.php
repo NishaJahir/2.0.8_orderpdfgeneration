@@ -275,11 +275,7 @@ class PaymentService
 				}
 			}
 			
-			if(in_array($requestData['payment_method'], ['novalnet_invoice','novalnet_prepayment']))
-			{
-				
-				$comments .= PHP_EOL . $this->getInvoicePrepaymentComments($requestData);
-			}
+			
 			else if($requestData['payment_id'] == '59')
 			{
 				if(!empty($requestData['cp_checkout_token']))
@@ -301,30 +297,28 @@ class PaymentService
      * @param array $requestData
      * @return string
      */
-    public function getInvoicePrepaymentComments($requestData)
-    {
-	   
-	if ( in_array($requestData['tid_status'], ['91', '100']) ) {  
-	
-	$comments = '';	
-	
-        $comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('transfer_amount_text');
-        if(!empty($requestData['due_date']))
+    public function getInvoicePrepaymentComments($requestData, $lang)
+    {     
+	$comments = '';
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid', $lang) . $requestData[0]->tid;
+	if(!empty($requestData->test_mode)) {
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('test_order', $lang);
+	}
+	$comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('transfer_amount_text', $lang);
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('account_holder_novalnet', $lang) . $requestData->invoice_account_holder;
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('iban', $lang) . $requestData->invoice_iban;
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bic', $lang) . $requestData->invoice_bic;
+        if($requestData->due_date)
         {
-            $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('due_date') . date('Y/m/d', (int)strtotime($requestData['due_date']));
+        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('due_date', $lang) . date('Y/m/d', (int)strtotime($requestData->due_date));
         }
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bank', $lang) . $requestData->bank;
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('amount', $lang) . $requestData[0]->amount . ' ' . $requestData->currency;
 
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('account_holder_novalnet') . $requestData['invoice_account_holder'];
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('iban') . $requestData['invoice_iban'];
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bic') . $requestData['invoice_bic'];
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bank') . $this->paymentHelper->checkUtf8Character($requestData['invoice_bankname']) . ' ' . $this->paymentHelper->checkUtf8Character($requestData['invoice_bankplace']);
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('amount') . $requestData['amount'] . ' ' . $requestData['currency'];
-	
-	$comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('any_one_reference_text');
-        $comments .= PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $requestData['tid']. PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $requestData['product'] . '-' . $requestData['order_no']). PHP_EOL;
-        $comments .= PHP_EOL;
-	    }
-        return $comments;
+	$comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('any_one_reference_text', $lang);
+	$comments .= PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference1', $lang) .' ' . 'TID '. $requestData[0]->tid. PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference2', $lang).' ' .('BNR-' . $requestData->product . '-' . $requestData[0]->orderNo). PHP_EOL;
+	$comments .= PHP_EOL;
+	return $comments;
     }
 
     /**
