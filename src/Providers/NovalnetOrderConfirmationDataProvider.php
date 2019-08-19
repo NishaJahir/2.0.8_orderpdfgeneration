@@ -64,7 +64,7 @@ class NovalnetOrderConfirmationDataProvider
 					$orderId = (int) $payment->order['orderId'];
 					$database = pluginApp(DataBase::class);
 					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
-					$paymentHelper->logger('details', $bank_details->transactionDetails);
+					$paymentHelper->logger('details', $bank_details[0]->transactionDetails);
 					
 					$authHelper = pluginApp(AuthHelper::class);
 					$orderComments = $authHelper->processUnguarded(
