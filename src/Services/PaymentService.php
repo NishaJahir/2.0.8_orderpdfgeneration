@@ -135,7 +135,7 @@ class PaymentService
     public function validateResponse()
     {
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
-	   $this->getLogger(__METHOD__)->error('re', $nnPaymentData);
+	 
 	    
 	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
@@ -147,7 +147,7 @@ class PaymentService
 	 $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
 	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
         $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
-	 $this->getLogger(__METHOD__)->error('check', $nnPaymentData);
+	
 	    
 	    $this->executePayment($nnPaymentData);
         
@@ -280,7 +280,7 @@ class PaymentService
 			
 			if(in_array($requestData['payment_method'], ['novalnet_invoice','novalnet_prepayment']))
 			{
-				$this->getLogger(__METHOD__)->error('name', $requestData['payment_method']);
+				
 				$comments .= PHP_EOL . $this->getInvoicePrepaymentComments($requestData);
 			}
 			else if($requestData['payment_id'] == '59')
@@ -306,7 +306,7 @@ class PaymentService
      */
     public function getInvoicePrepaymentComments($requestData)
     {
-	    $this->getLogger(__METHOD__)->error('invoce', $requestData);
+	   
 	if ( in_array($requestData['tid_status'], ['91', '100']) ) {  
 	
 	$comments = '';	
