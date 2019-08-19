@@ -41,6 +41,8 @@ use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 use Novalnet\Models\TransactionLog;
+use Plenty\Modules\Document\Models\Document;
+
 
 use Novalnet\Methods\NovalnetInvoicePaymentMethod;
 use Novalnet\Methods\NovalnetPrepaymentPaymentMethod;
@@ -375,14 +377,14 @@ class NovalnetServiceProvider extends ServiceProvider
 	
 	// Listen for the document generation event
 	    $eventDispatcher->listen(OrderPdfGenerationEvent::class,
-	    function (OrderPdfGenerationEvent $event) use ($dataBase, $paymentHelper, $paymentService, $paymentRepository) {
+	    function (OrderPdfGenerationEvent $event) use ($dataBase, $paymentHelper, $paymentService, $paymentRepository, $sessionStorage) {
 		    
 		/** @var Order $order */ 
 		$order = $event->getOrder();
 		$document_type = $event->getDocType();
 		$payments = $paymentRepository->getPaymentsByOrderId($order->id);
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
-		$lang = strtoupper($this->sessionStorage->getLocaleSettings()->language);
+		$lang = strtoupper($sessionStorage->getLocaleSettings()->language);
 		
 		$this->getLogger(__METHOD__)->error('language', $lang);
 		try {
