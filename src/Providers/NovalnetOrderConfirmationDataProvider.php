@@ -45,7 +45,7 @@ class NovalnetOrderConfirmationDataProvider
 	public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, $arg)
 	{
 		$paymentHelper = pluginApp(PaymentHelper::class);
-		$paymentService = pluginApp(PaymentHelper::class);
+		$paymentService = pluginApp(PaymentService::class);
 		$sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
 		$order = $arg[0];
 		$barzhlentoken = '';
