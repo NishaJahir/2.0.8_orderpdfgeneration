@@ -303,6 +303,7 @@ class PaymentService
      */
     public function getInvoicePrepaymentComments($requestData)
     {
+	    $this->getLogger(__METHOD__)->error('invoce', $requestData);
 	if ( in_array($requestData['tid_status'], ['91', '100']) ) {  
 	
 	$comments = '';	
