@@ -299,25 +299,25 @@ class PaymentService
      */
     public function getInvoicePrepaymentComments($requestData)
     {     
-	$lang = $requestData->language;
+	$this->getLogger(__METHOD__)->error('tra', $requestData);
 	$comments = '';
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid', $lang) . $requestData[0]->tid;
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid') . $requestData[0]['tid'];
 	if(!empty($requestData->test_mode)) {
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('test_order', $lang);
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('test_order');
 	}
-	$comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('transfer_amount_text', $lang);
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('account_holder_novalnet', $lang) . $requestData->invoice_account_holder;
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('iban', $lang) . $requestData->invoice_iban;
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bic', $lang) . $requestData->invoice_bic;
+	$comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('transfer_amount_text');
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('account_holder_novalnet') . $requestData['invoice_account_holder'];
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('iban') . $requestData['invoice_iban'];
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bic') . $requestData['invoice_bic'];
         if($requestData->due_date)
         {
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('due_date', $lang) . date('Y/m/d', (int)strtotime($requestData->due_date));
+        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('due_date') . date('Y/m/d', (int)strtotime($requestData['due_date']));
         }
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bank', $lang) . $requestData->bank;
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('amount', $lang) . $requestData[0]->amount . ' ' . $requestData->currency;
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('bank') . $requestData['bank'];
+	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('amount') . $requestData[0]['amount'] . ' ' . $requestData['currency'];
 
-	$comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('any_one_reference_text', $lang);
-	$comments .= PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference1', $lang) .' ' . 'TID '. $requestData[0]->tid. PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference2', $lang).' ' .('BNR-' . $requestData->product . '-' . $requestData[0]->orderNo). PHP_EOL;
+	$comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('any_one_reference_text');
+	$comments .= PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference1') .' ' . 'TID '. $requestData[0]['tid']. PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference2').' ' .('BNR-' . $requestData['product'] . '-' . $requestData[0]['orderNo']). PHP_EOL;
 	$comments .= PHP_EOL;
 	return $comments;
     }
