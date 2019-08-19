@@ -63,7 +63,8 @@ class NovalnetOrderConfirmationDataProvider
 					$comment = '';
 					$bank_details = $paymentService->getDatabaseValues($orderId);
 					if (in_array($bank_details['paymentName'], ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
-					$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
+					        $comments = '';
+						$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 					} else {
 						$comments = '';
 						$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details['tid'];
