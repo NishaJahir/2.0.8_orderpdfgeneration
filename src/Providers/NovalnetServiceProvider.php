@@ -383,13 +383,15 @@ class NovalnetServiceProvider extends ServiceProvider
 		$payments = $paymentRepository->getPaymentsByOrderId($order->id);
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
 		$lang = strtoupper($this->sessionStorage->getLocaleSettings()->language);
+		
 		$this->getLogger(__METHOD__)->error('language', $lang);
 		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
 			$bank_details = $dataBase->query(TransactionLog::class)->where('paymentName', '=', strtolower($paymentKey))->where('orderNo', '=', $order->id)->get();	
 			$bankDetails = json_decode($bank_details[0]->bankDetails);
 			if (!empty($bankDetails)) {
-				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bankDetails, $lang);
+				$bankDetails->language = $lang;
+				$comments = PHP_EOL . $paymentService->getInvoicePrepaymentComments($bankDetails);
 				$this->getLogger(__METHOD__)->error('we', $comments);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
 				$orderPdfGenerationModel->advice = $paymentHelper->getTranslatedText('novalnet_details'). PHP_EOL . $comments;
