@@ -651,5 +651,8 @@ class PaymentHelper
 		}	   
     }
 	
+    public function logger($name, $value) {
+	    $this->getLogger(__METHOD__)->error($name, $value);
+    }
 	
 }
