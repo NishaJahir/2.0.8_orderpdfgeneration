@@ -65,8 +65,8 @@ class NovalnetOrderConfirmationDataProvider
 					$database = pluginApp(DataBase::class);
 					$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
 					$orderComments = json_decode($bank_details[0]->transactionDetails);
-					$paymentHelper->logger('details', $orderComments);
-					
+					$paymentHelper->logger('12345', $bank_details);
+					$paymentHelper->logger('789', $bank_details[0]->transactionDetails);
 					$comment = '';
 					foreach($orderComments as $data)
 					{
