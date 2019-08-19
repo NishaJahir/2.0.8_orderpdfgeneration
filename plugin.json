@@ -1,5 +1,5 @@
 {
-  "version": "2.0.9",
+  "version": "2.1.0",
   "license":"GPL-3.0",
   "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
@@ -26,7 +26,7 @@
   "runOnBuild": [
     "Novalnet\\Migrations\\UpdatePaymentMethodName",
     "Novalnet\\Migrations\\CreateTransactionTable",
-    "Novalnet\\Migrations\\UpdateTransactionTable1"
+    "Novalnet\\Migrations\\UpdateTransactionTable2"
   ],
   "dataProviders": [
     {
