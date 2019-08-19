@@ -144,9 +144,7 @@ class PaymentService
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
         
-	 $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
-	$this->sessionStorage->getPlugin()->setValue('customerWish', null);
-        $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($nnPaymentData); 
+	 
 	
 	    
 	    $this->executePayment($nnPaymentData);
@@ -172,8 +170,7 @@ class PaymentService
             'ref_tid'          => $nnPaymentData['tid'],
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
-            'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0',
-	    'transaction_details' => $transactionComments
+            'bank_details'	   => !empty($bank_details) ? json_encode($bank_details) : '0'
         ];
 	   
 	    
