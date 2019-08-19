@@ -23,9 +23,6 @@ use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use \Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
-use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
-use Plenty\Modules\Plugin\DataBase\Contracts\Query;
-use Novalnet\Models\TransactionLog;
 use Novalnet\Services\PaymentService;
 /**
  * Class NovalnetOrderConfirmationDataProvider
