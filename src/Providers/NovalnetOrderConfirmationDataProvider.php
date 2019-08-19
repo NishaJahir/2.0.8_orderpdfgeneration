@@ -42,10 +42,11 @@ class NovalnetOrderConfirmationDataProvider
 	 * @param Arguments $arg
 	 * @return string
 	 */
-	public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, DataBase $dataBase, $arg)
+	public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, $arg)
 	{
 		$paymentHelper = pluginApp(PaymentHelper::class);
 		$sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
+		$dataBase = pluginApp(DataBase::class);
 		$order = $arg[0];
 		$barzhlentoken = '';
 		$barzahlenurl = '';
