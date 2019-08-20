@@ -925,7 +925,8 @@ class PaymentService
 		$bank_details['order_no'] = $bank_details['orderNo'];
 		$bank_details['amount'] = $bank_details['amount'] / 100;
 		//Decoding the json as array
-		$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
+		
+		$bank_details['bankDetails'] = !empty($bank_details['bankDetails']) ? json_decode( $bank_details['bankDetails'], true ) : '0';
 		//Merging the array
 		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
 		//Unsetting the redundant key
