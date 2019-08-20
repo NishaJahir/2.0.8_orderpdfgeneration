@@ -155,7 +155,8 @@ class PaymentService
 			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_token', $nnPaymentData['cp_checkout_token']);
 			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($nnPaymentData['test_mode']));
 		}
-		$cashpayment_details= PHP_EOL . $this->getCashPaymentComments($requestData);
+		$cashpayment_details= PHP_EOL . $this->getCashPaymentComments($nnPaymentData);
+		$this->getLogger(__METHOD__)->error('cash', $cashpayment_details);
 	}
         
 		$transaction_details = [
