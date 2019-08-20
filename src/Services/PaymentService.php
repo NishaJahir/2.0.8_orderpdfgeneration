@@ -147,14 +147,19 @@ class PaymentService
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
         $cashpayment_details = $this->getCashPaymentComments($nnPaymentData);
-	 
-	
-	    
-	    $this->executePayment($nnPaymentData);
+	$this->executePayment($nnPaymentData);
+        if($nnPaymentData['payment_id'] == '59')
+	{
+		if(!empty($nnPaymentData['cp_checkout_token']))
+		{
+			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_token', $nnPaymentData['cp_checkout_token']);
+			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($nnPaymentData['test_mode']));
+		}
+		$cashpayment_details= PHP_EOL . $this->getCashPaymentComments($requestData);
+	}
         
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'cp_checkout_token' => $nnPaymentData['cp_checkout_token'],
 				'cashpayment_details' => $cashpayment_details,
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product']
@@ -220,13 +225,10 @@ class PaymentService
                 $requestData['order_status'] = trim($this->config->get('Novalnet.novalnet_order_cancel_status'));
                 $requestData['paid_amount'] = '0';
             }
-            $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
-	    $this->sessionStorage->getPlugin()->setValue('customerWish', null);
-            $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($requestData);
 		
             $this->paymentHelper->createPlentyPayment($requestData);
             $this->paymentHelper->updateOrderStatus((int)$requestData['order_no'], $requestData['order_status']);
-            $this->paymentHelper->createOrderComments((int)$requestData['order_no'], $transactionComments);
+           
             return [
                 'type' => 'success',
                 'value' => $this->paymentHelper->getNovalnetStatusText($requestData)
@@ -269,15 +271,7 @@ class PaymentService
 			}
 			
 			
-			else if($requestData['payment_id'] == '59')
-			{
-				if(!empty($requestData['cp_checkout_token']))
-				{
-					$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_token', $requestData['cp_checkout_token']);
-					$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($requestData['test_mode']));
-				}
-				$comments .= PHP_EOL . $this->getCashPaymentComments($requestData);
-			}
+			
 		}
 
         return $comments;
