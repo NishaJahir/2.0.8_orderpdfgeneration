@@ -146,24 +146,19 @@ class PaymentService
         $nnPaymentData['order_no']       = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
-        
+        $cashpayment_details = $this->getCashPaymentComments($nnPaymentData);
 	 
 	
 	    
 	    $this->executePayment($nnPaymentData);
         
-		if (in_array($nnPaymentData['key'], ['27','41'])) {  
-			$bank_details = [
-				'invoice_account_holder' => $nnPaymentData['invoice_account_holder'],
-				'invoice_iban' => $nnPaymentData['invoice_iban'],
-				'invoice_bic' => $nnPaymentData['invoice_bic'],
-				'due_date' => $nnPaymentData['due_date'],
-				'bank' => $this->paymentHelper->checkUtf8Character($nnPaymentData['invoice_bankname']) . ' ' . $this->paymentHelper->checkUtf8Character($nnPaymentData['invoice_bankplace']),
+		$transaction_details = [
+				'status' => $nnPaymentData['status'],
+				'cp_checkout_token' => $nnPaymentData['cp_checkout_token'],
+				'cashpayment_details' => $cashpayment_details,
 				'currency' => $nnPaymentData['currency'],
-				'product' => $nnPaymentData['product'],
-				'test_mode' => !empty($nnPaymentData['test_mode']) ? $this->paymentHelper->getTranslatedText('test_order',$lang) : '0'
+				'product' => $nnPaymentData['product']
 				 ];
-		}
 	    
 	
         $transactionData = [
