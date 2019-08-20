@@ -383,11 +383,22 @@ class NovalnetServiceProvider extends ServiceProvider
 		$order = $event->getOrder();
 		$document_type = $event->getDocType();
 		$payments = $paymentRepository->getPaymentsByOrderId($order->id);
-		$this->getLogger(__METHOD__)->error('pay', $payments);
+		foreach ($payments as $payment)
+		{
+			$properties = $payment->properties;
+			foreach($properties as $property)
+			{
+			if ($property->typeId == 21) 
+			{
+			$invoiceDetails = $proper->value;
+			}
+			}
+		}
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
 		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
-			        $bank_details = $paymentService->getDatabaseValues($order->id);
+			        $db_details = $paymentService->getDatabaseValues($order->id);
+				$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
 				$comments = '';
 				$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
