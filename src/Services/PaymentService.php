@@ -913,24 +913,24 @@ class PaymentService
 	
 	public function getDatabaseValues($orderId) {
 		$database = pluginApp(DataBase::class);
-		$bank_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
-		if (!empty($bank_details)) {
+		$transaction_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
+		if (!empty($transaction_details)) {
 		//Typecasting object to array
-		$bank_details = (array)($bank_details[0]);
-		$bank_details['order_no'] = $bank_details['orderNo'];
-		$bank_details['amount'] = $bank_details['amount'] / 100;
-		if (empty($bank_details['bankDetails'])) {
-		return $bank_details;
+		$transaction_details = (array)($transaction_details[0]);
+		$transaction_details['order_no'] = $transaction_details['orderNo'];
+		$transaction_details['amount'] = $transaction_details['amount'] / 100;
+		if (empty($transaction_details['bankDetails'])) {
+		return $transaction_details;
 		}
 		//Decoding the json as array
-		$bank_details['bankDetails'] = !empty($bank_details['bankDetails']) ? json_decode( $bank_details['bankDetails'], true ) : '0';
-		$this->getLogger(__METHOD__)->error('1', $bank_details['bankDetails']);
+		$transaction_details['bankDetails'] = json_decode( $transaction_details['bankDetails'], true );
+		$this->getLogger(__METHOD__)->error('1', $transaction_details['bankDetails']);
 		//Merging the array
-		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);
-		$this->getLogger(__METHOD__)->error('2', $bank_details);
+		$transaction_details = array_merge($transaction_details, $transaction_details['bankDetails']);
+		$this->getLogger(__METHOD__)->error('2', $transaction_details);
 		//Unsetting the redundant key
-		unset($bank_details['bankDetails']);
-		return $bank_details;
+		unset($transaction_details['bankDetails']);
+		return $transaction_details;
 		}
 	}
 }
