@@ -390,22 +390,21 @@ class NovalnetServiceProvider extends ServiceProvider
 			}
 		}
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
-		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
-			$this->getLogger(__METHOD__)->error('ch', $paymentKey);
+		try {
 			        $db_details = $paymentService->getDatabaseValues($order->id);
 				$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
 				$comments = '';
 				$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 				$orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
 				$orderPdfGenerationModel->advice = $paymentHelper->getTranslatedText('novalnet_details'). PHP_EOL . $comments;
-			}
-			if ($event->getDocType() == Document::INVOICE){
+			        if ($event->getDocType() == Document::INVOICE) {
 				$event->addOrderPdfGeneration($orderPdfGenerationModel); 
-			}
+			       }
 		} catch (\Exception $e) {
                     $this->getLogger(__METHOD__)->error('Adding PDF comment failed for order' . $order->id , $e);
-                }
+                } 
+		}
 	    } 
 	  );  
     }
