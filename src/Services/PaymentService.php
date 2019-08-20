@@ -924,8 +924,8 @@ class PaymentService
 		$bank_details = (array)($bank_details[0]);
 		$bank_details['order_no'] = $bank_details['orderNo'];
 		$bank_details['amount'] = $bank_details['amount'] / 100;
+		$this->getLogger(__METHOD__)->error('3', $bank_details);
 		//Decoding the json as array
-		
 		$bank_details['bankDetails'] = !empty($bank_details['bankDetails']) ? json_decode( $bank_details['bankDetails'], true ) : '0';
 		$this->getLogger(__METHOD__)->error('1', $bank_details['bankDetails']);
 		//Merging the array
