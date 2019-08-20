@@ -63,7 +63,7 @@ class NovalnetOrderConfirmationDataProvider
 					$comment = '';
 					$bank_details = $paymentService->getDatabaseValues($orderId);
 					
-					if ($bank_details == 'novalnet_invoice' || $bank_details == 'novalnet_prepayment']) {
+					if ($bank_details->paymentName == 'novalnet_invoice' || $bank_details->paymentName == 'novalnet_prepayment') {
 					        $comments = '';
 						$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 					} else {
