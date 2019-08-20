@@ -83,14 +83,14 @@ class NovalnetOrderConfirmationDataProvider
 						$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
 					}
 					if(in_array($db_details['payment_id'], ['40','41'])) {
-				$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('guarantee_text');
+				$comments .= PHP_EOL . $paymentHelper->getTranslatedText('guarantee_text');
 				if($tid_status == '75' && $db_details['payment_id'] == '41')
 				{
-					$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_invoice_pending_payment_text');
+					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('gurantee_invoice_pending_payment_text');
 				}
 				if( $tid_status == '75' && $db_details['payment_id'] == '40')
 				{
-					$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
+					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
 				}
 			}
 					
