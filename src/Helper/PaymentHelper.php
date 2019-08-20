@@ -213,7 +213,7 @@ class PaymentHelper
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ORIGIN, Payment::ORIGIN_PLUGIN);
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_EXTERNAL_TRANSACTION_STATUS, $requestData['tid_status']);
 		
-		if ($requestData['invoice_type'] == 'INVOICE' && in_array($requestData['tid_status'], ['75', '91'])) {
+		if (in_array($requestData['payment_id'], ['27','41'])) {
 			$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER, $invoiceDetails); 
 		}
 		
