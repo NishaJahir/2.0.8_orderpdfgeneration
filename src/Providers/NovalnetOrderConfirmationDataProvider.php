@@ -80,19 +80,29 @@ class NovalnetOrderConfirmationDataProvider
 					$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
 					if (in_array($bank_details['paymentName'], ['novalnet_invoice', 'novalnet_prepayment'])) {
 						$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
+					}
+					if(in_array($bank_details['payment_id'], ['40','41'])) {
+						$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('guarantee_text');
+						if( $tid_status == '75' && $bank_details['payment_id'] == '41')
+						{
+							$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_invoice_pending_payment_text');
+						}
+						if( $tid_status == '75' && $bank_details['payment_id'] == '40')
+						{
+							$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
+						}
 					} 
 				}
-		}
-
+			}
 					$comment .= (string) $comments;
 					$comment .= PHP_EOL;
 					
-					}	
+		}	
 
 				  $payment_type = (string)$paymentHelper->getPaymentKeyByMop($payment->mopId);
 				  return $twig->render('Novalnet::NovalnetOrderHistory', ['comments' => html_entity_decode($comment),'barzahlentoken' => $barzhlentoken,'payment_type' => html_entity_decode($payment_type),'barzahlenurl' => $barzahlenurl]);
-				}
-			}
-		}
+	}
+}
+
 	
 
