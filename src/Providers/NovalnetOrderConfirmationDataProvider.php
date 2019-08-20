@@ -60,14 +60,27 @@ class NovalnetOrderConfirmationDataProvider
 						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
 					}
 					$orderId = (int) $payment->order['orderId'];
+					$properties = $payment->properties;
+					foreach($properties as $property)
+					{
+					if ($property->typeId == 21) 
+					{
+					$invoiceDetails = $proper->value;
+					}
+					if ($property->typeId == 30)
+				  	{
+					$tid_status = $property->value;
+				 	}
+					}
 					$comment = '';
-					$bank_details = $paymentService->getDatabaseValues($orderId);
+					$db_details = $paymentService->getDatabaseValues($orderId);
+					$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
 					$comments = '';
 					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $bank_details['tid'];
-					if(!empty($bank_details['test_mode'])) {
+					//if(!empty($bank_details['test_mode'])) {
 					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('test_order');
-					}
-					$paymentHelper->logger('check', $bank_details);
+					//}
+					$paymentHelper->logger('dataprovider', $bank_details);
 					if (in_array($bank_details['paymentName'], ['novalnet_invoice', 'novalnet_prepayment'])) {
 					        $comments = '';
 						$comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
