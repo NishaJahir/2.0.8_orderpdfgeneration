@@ -163,7 +163,8 @@ class PaymentService
 				'status' => $nnPaymentData['status'],
 				'cashpayment_details' => $cashpayment_details,
 				'currency' => $nnPaymentData['currency'],
-				'product' => $nnPaymentData['product']
+				'product' => $nnPaymentData['product'],
+			        'payment_id' => $nnPaymentData['payment_id']
 				 ];
 	    
 	
