@@ -33,8 +33,6 @@ use Novalnet\Services\PaymentService;
 use Novalnet\Services\TransactionService;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\ConfigRepository;
-use IO\Services\SessionStorageService;
-use IO\Constants\SessionStorageKeys;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 use Plenty\Modules\Order\Pdf\Models\OrderPdfGeneration;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -217,9 +215,6 @@ class NovalnetServiceProvider extends ServiceProvider
 		
                     if($paymentHelper->getPaymentKeyByMop($event->getMop()))
                     {	
-			    		$sessionStorageValue = pluginApp(SessionStorageService::class);
-						$customerWish = $sessionStorageValue->getSessionValue(SessionStorageKeys::ORDER_CONTACT_WISH);
-						$sessionStorageValue->setSessionValue(SessionStorageKeys::ORDER_CONTACT_WISH, null);
 						$paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());	
 						$guaranteeStatus = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey);
 						$basket = $basketRepository->load();			
@@ -346,7 +341,7 @@ class NovalnetServiceProvider extends ServiceProvider
 									} 
 								} 
 							}
-								$sessionStorage->getPlugin()->setValue('customerWish', $customerWish);
+								
 								$event->setValue($content);
 								$event->setType($contentType);
 						} 
