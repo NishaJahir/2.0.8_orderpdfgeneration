@@ -392,6 +392,7 @@ class NovalnetServiceProvider extends ServiceProvider
 		$paymentKey = $paymentHelper->getPaymentKeyByMop($payments[0]->mopId);
 		try {
 		if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT'])) {
+			$this->getLogger(__METHOD__)->error('ch', $paymentKey);
 			        $db_details = $paymentService->getDatabaseValues($order->id);
 				$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
 				$comments = '';
