@@ -927,8 +927,10 @@ class PaymentService
 		//Decoding the json as array
 		
 		$bank_details['bankDetails'] = !empty($bank_details['bankDetails']) ? json_decode( $bank_details['bankDetails'], true ) : '0';
+		$this->getLogger(__METHOD__)->error('1', $bank_details['bankDetails']);
 		//Merging the array
-		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
+		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);
+		$this->getLogger(__METHOD__)->error('2', $bank_details);
 		//Unsetting the redundant key
 		unset($bank_details['bankDetails']);
 		return $bank_details;
