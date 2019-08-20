@@ -226,7 +226,7 @@ class PaymentService
                 $requestData['paid_amount'] = '0';
             }
             $customerComments = $this->sessionStorage->getPlugin()->getValue('customerWish');
-			$this->sessionStorage->getPlugin()->setValue('customerWish', null);
+	    $this->sessionStorage->getPlugin()->setValue('customerWish', null);
             $transactionComments = $customerComments . PHP_EOL . $this->getTransactionComments($requestData);
 		
             $this->paymentHelper->createPlentyPayment($requestData);
@@ -255,11 +255,6 @@ class PaymentService
     {
         $lang = strtolower((string)$requestData['lang']);
 		$comments = '';
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid', $lang) . $requestData['tid'];
-	    
-        if(!empty($requestData['test_mode'])) {
-            $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('test_order', $lang);
-        }
         
         if($requestData['status'] != '100')
 		{
