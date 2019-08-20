@@ -928,12 +928,14 @@ class PaymentService
 		//Typecasting object to array
 		$bank_details = (array)($bank_details[0]);
 		$bank_details['order_no'] = $bank_details['orderNo'];
+		$bank_details['amount'] = $bank_details['amount'] / 100;
 		//Decoding the json as array
 		$bank_details['bankDetails'] = json_decode( $bank_details['bankDetails'], true );
 		//Merging the array
 		$bank_details = array_merge($bank_details, $bank_details['bankDetails']);				
 		//Unsetting the redundant key
 		unset($bank_details['bankDetails']);
+		return $bank_details;
 		}
 	}
 }
