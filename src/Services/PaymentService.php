@@ -297,12 +297,7 @@ class PaymentService
      */
     public function getInvoicePrepaymentComments($requestData)
     {     
-	$this->getLogger(__METHOD__)->error('entry', $requestData);
 	$comments = '';
-	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('nn_tid') . $requestData['tid'];
-	if(!empty($requestData['test_mode'])) {
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('test_order');    
-        }
 	$comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('transfer_amount_text');
 	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('account_holder_novalnet') . $requestData['invoice_account_holder'];
 	$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('iban') . $requestData['invoice_iban'];
@@ -924,7 +919,9 @@ class PaymentService
 		$bank_details = (array)($bank_details[0]);
 		$bank_details['order_no'] = $bank_details['orderNo'];
 		$bank_details['amount'] = $bank_details['amount'] / 100;
-		$this->getLogger(__METHOD__)->error('3', $bank_details);
+		if (empty($bank_details['bankDetails'])) {
+		return $bank_details;
+		}
 		//Decoding the json as array
 		$bank_details['bankDetails'] = !empty($bank_details['bankDetails']) ? json_decode( $bank_details['bankDetails'], true ) : '0';
 		$this->getLogger(__METHOD__)->error('1', $bank_details['bankDetails']);
