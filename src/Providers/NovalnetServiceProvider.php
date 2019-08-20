@@ -390,7 +390,7 @@ class NovalnetServiceProvider extends ServiceProvider
 			{
 			if ($property->typeId == 21) 
 			{
-			$invoiceDetails = $proper->value;
+			$invoiceDetails = $property->value;
 			}
 			}
 		}
