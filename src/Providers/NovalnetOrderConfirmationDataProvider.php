@@ -48,18 +48,10 @@ class NovalnetOrderConfirmationDataProvider
 		$barzhlentoken = '';
 		$barzahlenurl = '';
 		$payments = $paymentRepositoryContract->getPaymentsByOrderId($order['id']);
-		
+		$paymentHelper->logger('dataprovider1', $payments);
 		if (!empty ($order['id'])) {
 			foreach($payments as $payment)
 			{
-				if($paymentHelper->getPaymentKeyByMop($payment->mopId))
-				{
-					if ($payment->method['paymentKey'] == 'NOVALNET_CASHPAYMENT')
-					{
-						$barzhlentoken = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_token'));
-						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
-					}
-					$orderId = (int) $payment->order['orderId'];
 					$properties = $payment->properties;
 					foreach($properties as $property)
 					{
@@ -72,6 +64,15 @@ class NovalnetOrderConfirmationDataProvider
 					$tid_status = $property->value;
 				 	}
 					}
+				if($paymentHelper->getPaymentKeyByMop($payment->mopId))
+				{
+					if ($payment->method['paymentKey'] == 'NOVALNET_CASHPAYMENT')
+					{
+						$barzhlentoken = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_token'));
+						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
+					}
+					$orderId = (int) $payment->order['orderId'];
+					
 					$comment = '';
 					$db_details = $paymentService->getDatabaseValues($orderId);
 					$bank_details = array_merge($db_details, json_decode($invoiceDetails, true));
