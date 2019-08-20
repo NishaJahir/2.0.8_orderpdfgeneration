@@ -310,7 +310,7 @@ class CallbackController extends Controller
 						
 							$callbackComments  = '</br>';
 							$callbackComments .= sprintf($this->paymentHelper->getTranslatedText('callback_initial_execution',$orderLanguage), $this->aryCaptureParams['shop_tid'], ($this->aryCaptureParams['amount'] / 100), $this->aryCaptureParams['currency'], date('Y-m-d H:i:s'), $this->aryCaptureParams['tid'] ).'</br>';
-							$this->getLogger->setIdentifier('NOVALNET')->info('transfer' . $nnTransactionHistory->orderNo, $callbackComments);
+							$this->getLogger(__METHOD__)->info('transfer' . $nnTransactionHistory->orderNo, $callbackComments);
 							$this->getLogger->setIdentifier('NOVALNET')->info('invoice credit processed' . $nnTransactionHistory->orderNo, $callbackComments);
 							if($nnTransactionHistory->order_total_amount <= ($nnTransactionHistory->order_paid_amount + $this->aryCaptureParams['amount']))
 							{
