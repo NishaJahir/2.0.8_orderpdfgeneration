@@ -146,7 +146,8 @@ class PaymentService
         $nnPaymentData['order_no']       = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
-        $cashpayment_details = $this->getCashPaymentComments($nnPaymentData);
+        $cashpayment_details = json_encode ($this->getCashPaymentComments($nnPaymentData));
+	    
 	$this->executePayment($nnPaymentData);
         if($nnPaymentData['payment_id'] == '59')
 	{
@@ -314,8 +315,8 @@ class PaymentService
       */
     public function getCashPaymentComments($requestData)
     {
-	$comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
-        $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
+	//$comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
+       // $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
 
         $strnos = 0;
         foreach($requestData as $key => $val)
@@ -325,18 +326,22 @@ class PaymentService
                 $strnos++;
             }
         }
-
+	storedetails[] = '';
         for($i = 1; $i <= $strnos; $i++)
         {
-            $countryName = !empty($requestData['nearest_store_country_' . $i]) ? $requestData['nearest_store_country_' . $i] : '';
-            $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
-            $comments .= $countryName . PHP_EOL;
-            $comments .= $this->paymentHelper->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
-            $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
-            $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
+	storedetails[i]['nearest_store_country']= $requestData['nearest_store_country_' . $i];
+	storedetails[i]['nearest_store_title']= $requestData['nearest_store_title_' . $i];
+	storedetails[i]['nearest_store_city']= $requestData['nearest_store_city_' . $i];
+	storedetails[i]['nearest_store_zipcode']= $requestData['nearest_store_zipcode_' . $i];
+            //$countryName = !empty($requestData['nearest_store_country_' . $i]) ? $requestData['nearest_store_country_' . $i] : '';
+          //  $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
+          //  $comments .= $countryName . PHP_EOL;
+          //  $comments .= $this->paymentHelper->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
+          //  $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
+          //  $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
         }
 
-        return $comments;
+        return storedetails;
     }
 
     /**
