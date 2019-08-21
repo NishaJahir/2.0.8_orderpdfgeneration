@@ -315,6 +315,7 @@ class PaymentService
       */
     public function getCashPaymentComments($requestData)
     {
+	    $this->getLogger(__METHOD__)->error('response', $requestData);
 	//$comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
        // $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
 
@@ -340,7 +341,7 @@ class PaymentService
           //  $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
           //  $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
         }
-
+        $this->getLogger(__METHOD__)->error('test', $storedetails);
         return $storedetails;
     }
 
