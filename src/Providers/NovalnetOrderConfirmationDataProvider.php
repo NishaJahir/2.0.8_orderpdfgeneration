@@ -71,10 +71,9 @@ class NovalnetOrderConfirmationDataProvider
 						$barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
 					}
 					$orderId = (int) $payment->order['orderId'];
-					
 					$comment = '';
 					$db_details = $paymentService->getDatabaseValues($orderId);
-					$paymentHelper->logger('data', $db_details);
+					$paymentHelper->logger('dataprovi', $db_details);
 					$comments = '';
 					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('nn_tid') . $db_details['tid'];
 					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('test_order');
