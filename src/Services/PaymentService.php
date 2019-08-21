@@ -158,11 +158,12 @@ class PaymentService
 		}
 		$cashpayment_details= $this->getCashPaymentComments($nnPaymentData);
 		$this->getLogger(__METHOD__)->error('cash', $cashpayment_details);
+		
 	}
         
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'cashpayment_details' => $cashpayment_details,
+				'cashpayment_details' => (array) $cashpayment_details,
 				'cashpayment_due_date' => $nnPaymentData['cashpayment_due_date'],
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
