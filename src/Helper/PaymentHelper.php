@@ -121,7 +121,7 @@ class PaymentHelper
 		$this->orderComment                   = $orderComment;		
 		$this->config                         = $configRepository;
 		$this->sessionStorage                 = $sessionStorage;
-		$this->paymentservice                 = $paymentService;
+		$this->paymentService                 = $paymentService;
 		$this->countryRepository              = $countryRepository;
 	}
 
@@ -218,7 +218,7 @@ class PaymentHelper
 		if (in_array($requestData['payment_id'], ['27','41'])) {
 			$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER, $invoiceDetails); 
 		}
-		$cashpayment_comments = $this->paymentservice->getCashPaymentComments($requestData);
+		$cashpayment_comments = $this->paymentService->getCashPaymentComments($requestData);
 		if ($requestData['payment_id'] == '59') {
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_PAYMENT_TEXT, $cashpayment_comments);	
 		}
