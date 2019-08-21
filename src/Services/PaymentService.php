@@ -146,65 +146,12 @@ class PaymentService
         $nnPaymentData['order_no']       = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
         $nnPaymentData['mop']            = $this->sessionStorage->getPlugin()->getValue('mop');
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
-       $test = [
-$name1 = 'variable1',
-$name2 = 'variable2',
-$name3 = 'variable3',
-$name4 = 'variable4',
-$name5 = 'variable5',
-$name6 = 'variable6',
-$name7 = 'variable7',
-$name8 = 'variable8',
-$name9 = 'variable9',
-$name10 = 'variable10',
-$name11 = 'variable11',
-$name12 = 'variable12',
-$name13 = 'variable13',
-$name14 = 'variable14',
-$name15 = 'variable15',
-$name16 = 'variable16',
-$name17 = 'variable17',
-$name18 = 'variable18',
-$name19 = 'variable19',
-$name20 = 'variable20',
-$name21 = 'variable21',
-$name22 = 'variable22',
-$name23 = 'variable23',
-$name24 = 'variable24',
-$name25 = 'variable25',
-$name26 = 'variable26',
-$name27 = 'variable27',
-$name28 = 'variable28',
-$name29 = 'variable29',
-$name30 = 'variable30',
-$name31 = 'variable31',
-$name32 = 'variable32',
-$name33 = 'variable33',
-$name34 = 'variable34',
-$name35 = 'variable35',
-$name36 = 'variable36',
-$name37 = 'variable37',
-$name38 = 'variable38',
-$name39 = 'variable39',
-$name40 = 'variable40',
-$name41 = 'variable41',
-$name42 = 'variable42',
-$name43 = 'variable43',
-$name44 = 'variable44',
-$name45 = 'variable45',
-$name46 = 'variable46',
-$name47 = 'variable47',
-$name48 = 'variable48',
-$name49 = 'variable49',
-$name50 = 'variable50',
-];
-	    
+    
 	$this->executePayment($nnPaymentData);
         
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
 				'currency' => $nnPaymentData['currency'],
-			        'test'    => $test,
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
 				 ];
