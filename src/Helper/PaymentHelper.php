@@ -220,6 +220,7 @@ class PaymentHelper
 		if (in_array($requestData['payment_id'] == '59')) {
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_PAYMENT_TEXT, $cashpayment_comments);	
 		}
+		$this->getLogger(__METHOD__)->error('helper', $cashpayment_comments);
 		$payment->properties = $paymentProperty;
 
 		$paymentObj = $this->paymentRepository->createPayment($payment);
