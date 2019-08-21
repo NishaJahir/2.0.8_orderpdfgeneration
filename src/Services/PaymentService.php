@@ -202,7 +202,7 @@ $name50 = 'variable1',
 ];
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'testing' => $test,
+				'testing' => json_encode($test),
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
