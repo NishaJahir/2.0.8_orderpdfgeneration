@@ -659,8 +659,8 @@ class PaymentHelper
 	
    public function getCashPaymentComments($requestData)
     {
-	    $comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
-        $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
+	    $comments = $this->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
+        $comments .= PHP_EOL . PHP_EOL . $this->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
 
         $strnos = 0;
         foreach($requestData as $key => $val)
@@ -676,7 +676,7 @@ class PaymentHelper
             $countryName = !empty($requestData['nearest_store_country_' . $i]) ? $requestData['nearest_store_country_' . $i] : '';
             $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
             $comments .= $countryName . PHP_EOL;
-            $comments .= $this->paymentHelper->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
+            $comments .= $this->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
             $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
             $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
         }
