@@ -163,6 +163,7 @@ class PaymentService
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
 				'cashpayment_details' => $cashpayment_details,
+				'cashpayment_due_date' => $nnPaymentData['cashpayment_due_date'],
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
@@ -176,7 +177,7 @@ class PaymentService
             'ref_tid'          => $nnPaymentData['tid'],
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
-            'bank_details'	   => !empty($transaction_details) ? json_encode($transaction_details) : '0'
+            'bank_details'	=> !empty($transaction_details) ? json_encode($transaction_details) : '0'
         ];
 	   
 	    
@@ -313,37 +314,23 @@ class PaymentService
       * @param array $requestData
       * 
       */
-    public function getCashPaymentComments($requestData)
-    {
-	    $this->getLogger(__METHOD__)->error('response', $requestData);
-	//$comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
-       // $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
-
-        $strnos = 0;
-        foreach($requestData as $key => $val)
-        {
-            if(strpos($key, 'nearest_store_title') !== false)
-            {
-                $strnos++;
-            }
-        }
-	$storedetails[] = '';
-        for($i = 1; $i <= $strnos; $i++)
-        {
-	$storedetails[$i]['nearest_store_country']= $requestData['nearest_store_country_' . $i];
-	$storedetails[$i]['nearest_store_title']= $requestData['nearest_store_title_' . $i];
-	$storedetails[$i]['nearest_store_city']= $requestData['nearest_store_city_' . $i];
-	$storedetails[$i]['nearest_store_zipcode']= $requestData['nearest_store_zipcode_' . $i];
-            //$countryName = !empty($requestData['nearest_store_country_' . $i]) ? $requestData['nearest_store_country_' . $i] : '';
-          //  $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
-          //  $comments .= $countryName . PHP_EOL;
-          //  $comments .= $this->paymentHelper->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
-          //  $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
-          //  $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
-        }
-        $this->getLogger(__METHOD__)->error('test', $storedetails);
-        return $storedetails;
-    }
+	public function getCashPaymentComments($requestData)
+	{
+	$strnos = 1;
+	$storedetails = [];
+	foreach($requestData as $key => $val)
+	{
+	if(strpos($key, 'nearest_store_title') !== false)
+	{ 
+	$storedetails[$strnos]['nearest_store_country']= $requestData['nearest_store_country_' . $strnos];
+	$storedetails[$strnos]['nearest_store_title']= $requestData['nearest_store_title_' . $strnos];
+	$storedetails[$strnos]['nearest_store_city']= $requestData['nearest_store_city_' . $strnos];
+	$storedetails[$strnos]['nearest_store_zipcode']= $requestData['nearest_store_zipcode_' . $strnos];
+	$strnos++;
+	}
+	}
+	return $storedetails;
+	}
 
     /**
      * Build Novalnet server request parameters
