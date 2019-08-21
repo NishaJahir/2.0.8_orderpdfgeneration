@@ -31,7 +31,7 @@ use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Constants\NovalnetConstants;
-use Novalnet\Services\PaymentService;
+
 
 /**
  * Class PaymentHelper
@@ -47,7 +47,7 @@ class PaymentHelper
 	 * @var PaymentMethodRepositoryContract
 	 */
 	private $paymentMethodRepository;
-        private $paymentService;
+       
 	/**
 	 *
 	 * @var PaymentRepositoryContract
@@ -109,7 +109,7 @@ class PaymentHelper
 								PaymentOrderRelationRepositoryContract $paymentOrderRelationRepository,
 								CommentRepositoryContract $orderComment,
 								ConfigRepository $configRepository,
-				    PaymentService $paymentService,
+				   
 								FrontendSessionStorageFactoryContract $sessionStorage,
 								CountryRepositoryContract $countryRepository
 							  )
@@ -121,7 +121,6 @@ class PaymentHelper
 		$this->orderComment                   = $orderComment;		
 		$this->config                         = $configRepository;
 		$this->sessionStorage                 = $sessionStorage;
-		$this->paymentService                 = $paymentService;
 		$this->countryRepository              = $countryRepository;
 	}
 
@@ -218,7 +217,7 @@ class PaymentHelper
 		if (in_array($requestData['payment_id'], ['27','41'])) {
 			$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER, $invoiceDetails); 
 		}
-		$cashpayment_comments = $this->paymentService->getCashPaymentComments($requestData);
+		$cashpayment_comments = $this->getCashPaymentComments($requestData);
 		if ($requestData['payment_id'] == '59') {
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_PAYMENT_TEXT, $cashpayment_comments);	
 		}
@@ -657,4 +656,31 @@ class PaymentHelper
 	    $this->getLogger(__METHOD__)->error($name, $value);
     }
 	
+	
+   public function getCashPaymentComments($requestData)
+    {
+	    $comments = $this->paymentHelper->getTranslatedText('cashpayment_expire_date') . $requestData['cashpayment_due_date'] . PHP_EOL;
+        $comments .= PHP_EOL . PHP_EOL . $this->paymentHelper->getTranslatedText('cashpayment_near_you') . PHP_EOL . PHP_EOL . PHP_EOL;
+
+        $strnos = 0;
+        foreach($requestData as $key => $val)
+        {
+            if(strpos($key, 'nearest_store_title') !== false)
+            {
+                $strnos++;
+            }
+        }
+
+        for($i = 1; $i <= $strnos; $i++)
+        {
+            $countryName = !empty($requestData['nearest_store_country_' . $i]) ? $requestData['nearest_store_country_' . $i] : '';
+            $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
+            $comments .= $countryName . PHP_EOL;
+            $comments .= $this->paymentHelper->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
+            $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
+            $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
+        }
+
+        return $comments;
+    }
 }
