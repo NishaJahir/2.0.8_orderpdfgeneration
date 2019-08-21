@@ -109,6 +109,7 @@ class PaymentHelper
 								PaymentOrderRelationRepositoryContract $paymentOrderRelationRepository,
 								CommentRepositoryContract $orderComment,
 								ConfigRepository $configRepository,
+				    PaymentService $paymentService,
 								FrontendSessionStorageFactoryContract $sessionStorage,
 								CountryRepositoryContract $countryRepository
 							  )
@@ -120,6 +121,7 @@ class PaymentHelper
 		$this->orderComment                   = $orderComment;		
 		$this->config                         = $configRepository;
 		$this->sessionStorage                 = $sessionStorage;
+		$this->paymentservice                 = $paymentService;
 		$this->countryRepository              = $countryRepository;
 	}
 
@@ -216,13 +218,13 @@ class PaymentHelper
 		if (in_array($requestData['payment_id'], ['27','41'])) {
 			$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER, $invoiceDetails); 
 		}
-		$cashpayment_comments = $paymentService->getCashPaymentComments($requestData);
-		if (in_array($requestData['payment_id'] == '59')) {
+		$cashpayment_comments = $this->paymentservice->getCashPaymentComments($requestData);
+		if ($requestData['payment_id'] == '59') {
 		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_PAYMENT_TEXT, $cashpayment_comments);	
 		}
 		$this->getLogger(__METHOD__)->error('helper', $cashpayment_comments);
 		$payment->properties = $paymentProperty;
-
+		$this->getLogger(__METHOD__)->error('property', $payment->properties);
 		$paymentObj = $this->paymentRepository->createPayment($payment);
 
 		$this->assignPlentyPaymentToPlentyOrder($paymentObj, (int)$requestData['order_no']);
