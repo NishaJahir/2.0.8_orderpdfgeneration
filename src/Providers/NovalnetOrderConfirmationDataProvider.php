@@ -93,6 +93,11 @@ class NovalnetOrderConfirmationDataProvider
 					$comments .= PHP_EOL . $paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
 				}
 			}
+				if($db_details['payment_id'] == '59' ) {
+				
+				$comments .= $paymentHelper->getTranslatedText('cashpayment_expire_date') . $db_details['cashpayment_due_date'] . PHP_EOL;	
+				}
+				
 					
 				}
 			}
