@@ -62,6 +62,10 @@ class NovalnetOrderConfirmationDataProvider
 				{
 				$tid_status = $property->value;
 				}
+				if ($property->typeId == 22)
+				{
+				$cashpayment_comments = $property->value;
+				}
 				}
 				if($paymentHelper->getPaymentKeyByMop($payment->mopId))
 				{
@@ -93,8 +97,7 @@ class NovalnetOrderConfirmationDataProvider
 				}
 			}
 				if($db_details['payment_id'] == '59' ) {
-				
-				$comments .= $paymentHelper->getTranslatedText('cashpayment_expire_date') . $db_details['cashpayment_due_date'] . PHP_EOL;	
+				$comments .= $cashpayment_comments;
 				}
 				
 					
