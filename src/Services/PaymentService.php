@@ -148,9 +148,61 @@ class PaymentService
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
     
 	$this->executePayment($nnPaymentData);
-        
+        $test = [
+$name1 = 'variable1',
+$name2 = 'variable1',
+$name3 = 'variable1',
+$name4 = 'variable1',
+$name5 = 'variable1',
+$name6 = 'variable1',
+$name7 = 'variable1',
+$name8 = 'variable1',
+$name9 = 'variable1',
+$name10 = 'variable1',
+$name11 = 'variable1',
+$name12 = 'variable1',
+$name13 = 'variable1',
+$name14 = 'variable1',
+$name15 = 'variable1',
+$name16 = 'variable1',
+$name17 = 'variable1',
+$name18 = 'variable1',
+$name19 = 'variable1',
+$name20 = 'variable1',
+$name21 = 'variable1',
+$name22 = 'variable1',
+$name23 = 'variable1',
+$name24 = 'variable1',
+$name25 = 'variable1',
+$name26 = 'variable1',
+$name27 = 'variable1',
+$name28 = 'variable1',
+$name29 = 'variable1',
+$name30 = 'variable1',
+$name31 = 'variable1',
+$name32 = 'variable1',
+$name33 = 'variable1',
+$name34 = 'variable1',
+$name35 = 'variable1',
+$name36 = 'variable1',
+$name37 = 'variable1',
+$name38 = 'variable1',
+$name39 = 'variable1',
+$name40 = 'variable1',
+$name41 = 'variable1',
+$name42 = 'variable1',
+$name43 = 'variable1',
+$name44 = 'variable1',
+$name45 = 'variable1',
+$name46 = 'variable1',
+$name47 = 'variable1',
+$name48 = 'variable1',
+$name49 = 'variable1',
+$name50 = 'variable1',
+];
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
+				'testing' => $test,
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
@@ -836,6 +888,7 @@ class PaymentService
 		$transaction_details['bankDetails'] = json_decode( $transaction_details['bankDetails'], true );
 		//Merging the array
 		$transaction_details = array_merge($transaction_details, $transaction_details['bankDetails']);
+	        $this->getLogger(__METHOD__)->error('check', $transaction_details);
 		//Unsetting the redundant key
 		unset($transaction_details['bankDetails']);
 		return $transaction_details;
