@@ -149,22 +149,9 @@ class PaymentService
        
 	    
 	$this->executePayment($nnPaymentData);
-        if($nnPaymentData['payment_id'] == '59')
-	{
-		if(!empty($nnPaymentData['cp_checkout_token']))
-		{
-			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_token', $nnPaymentData['cp_checkout_token']);
-			$this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($nnPaymentData['test_mode']));
-		}
-		$cashpayment_details= $this->getCashPaymentComments($nnPaymentData);
-		$this->getLogger(__METHOD__)->error('cash', $cashpayment_details);
-		
-	}
         
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'cashpayment_details' =>  json_encode($cashpayment_details),
-				'cashpayment_due_date' => $nnPaymentData['cashpayment_due_date'],
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
@@ -246,42 +233,6 @@ class PaymentService
             ];
         }
     }
-
-    /**
-     * Build transaction comments for the order
-     *
-     * @param array $requestData
-     * @return string
-     */
-    public function getTransactionComments($requestData)
-    {
-        $lang = strtolower((string)$requestData['lang']);
-		$comments = '';
-        
-        if($requestData['status'] != '100')
-		{
-			$responseText = $this->paymentHelper->getNovalnetStatusText($requestData);
-			$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('transaction_cancellation', $lang) . $responseText . PHP_EOL;    
-		} else {
-			if(in_array($requestData['payment_id'], ['40','41'])) {
-				$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('guarantee_text');
-				if( $requestData['tid_status'] == '75' && $requestData['payment_id'] == '41')
-				{
-					$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_invoice_pending_payment_text');
-				}
-				if( $requestData['tid_status'] == '75' && $requestData['payment_id'] == '40')
-				{
-					$comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('gurantee_sepa_pending_payment_text');
-				}
-			}
-			
-			
-			
-		}
-
-        return $comments;
-    }
-    
 	
     /**
      * Build Invoice and Prepayment transaction comments
@@ -309,29 +260,6 @@ class PaymentService
 	return $comments;
     }
 
-    /**
-      * Build cash payment transaction comments
-      *
-      * @param array $requestData
-      * 
-      */
-	public function getCashPaymentComments($requestData)
-	{
-	$strnos = 1;
-	$storedetails = [];
-	foreach($requestData as $key => $val)
-	{
-	if(strpos($key, 'nearest_store_title') !== false)
-	{ 
-	$storedetails[$strnos]['nearest_store_country']= $requestData['nearest_store_country_' . $strnos];
-	$storedetails[$strnos]['nearest_store_title']= $requestData['nearest_store_title_' . $strnos];
-	$storedetails[$strnos]['nearest_store_city']= $requestData['nearest_store_city_' . $strnos];
-	$storedetails[$strnos]['nearest_store_zipcode']= $requestData['nearest_store_zipcode_' . $strnos];
-	$strnos++;
-	}
-	}
-	return $storedetails;
-	}
 
     /**
      * Build Novalnet server request parameters
