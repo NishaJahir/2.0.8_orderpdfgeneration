@@ -886,7 +886,7 @@ $name50 = 'variable1',
 		$transaction_details['amount'] = $transaction_details['amount'] / 100;
 		//Decoding the json as array
 		$transaction_details['bankDetails'] = json_decode( $transaction_details['bankDetails'], true );
-		$this->getLogger(__METHOD__)->error('notice', $transaction_details);
+		$this->getLogger(__METHOD__)->error('notice', $transaction_details['bankDetails']);
 		//Merging the array
 		$transaction_details = array_merge($transaction_details, $transaction_details['bankDetails']);
 	        
