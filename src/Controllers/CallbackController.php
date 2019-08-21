@@ -276,6 +276,7 @@ class CallbackController extends Controller
 		{   // Subscription
 			$this->aryCaptureParams['shop_tid'] = $this->aryCaptureParams['signup_tid'];
 		}
+		$this->getLogger(__METHOD__)->alert('alert', 'nisha');
 $this->getLogger(__METHOD__)->info('info', 'info');
 		if(empty($this->aryCaptureParams['vendor_activation']))
 		{
