@@ -163,7 +163,7 @@ class PaymentService
         
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'cashpayment_details' => (array) $cashpayment_details,
+				'cashpayment_details' =>  json_encode($cashpayment_details),
 				'cashpayment_due_date' => $nnPaymentData['cashpayment_due_date'],
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
