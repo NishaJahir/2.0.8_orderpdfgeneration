@@ -294,7 +294,12 @@ class CallbackController extends Controller
 				$transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
 				$callbackComments = '</br>' . sprintf($this->paymentHelper->getTranslatedText('callback_transaction_cancellation',$orderLanguage),date('d.m.Y'), date('H:i:s'));
 				$this->paymentHelper->updateOrderStatus($nnTransactionHistory->orderNo, (float) $this->config->get('Novalnet.novalnet_order_cancel_status'));
-				$this->getLogger(__METHOD__)->info('Transaction cancellation executed', $callbackComments);
+				//$this->getLogger(__METHOD__)->info('Transaction cancellation executed', $callbackComments);
+				$this->getLogger(__METHOD__)->error('Transaction cancellation executed', $callbackComments);
+				$this->getLogger(__METHOD__)->warning('Transaction cancellation executed', $callbackComments);
+				$this->getLogger(__METHOD__)->notice('Transaction cancellation executed', $callbackComments);
+				$this->getLogger(__METHOD__)->report('Transaction cancellation executed', $callbackComments);
+
                 $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
 				return $this->renderTemplate($callbackComments);
 			}
