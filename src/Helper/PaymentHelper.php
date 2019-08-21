@@ -31,7 +31,7 @@ use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Constants\NovalnetConstants;
-
+use Novalnet\Services\PaymentService;
 
 /**
  * Class PaymentHelper
@@ -47,7 +47,7 @@ class PaymentHelper
 	 * @var PaymentMethodRepositoryContract
 	 */
 	private $paymentMethodRepository;
-
+        private $paymentService;
 	/**
 	 *
 	 * @var PaymentRepositoryContract
@@ -216,7 +216,10 @@ class PaymentHelper
 		if (in_array($requestData['payment_id'], ['27','41'])) {
 			$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER, $invoiceDetails); 
 		}
-		
+		$cashpayment_comments = $paymentService->getCashPaymentComments($requestData);
+		if (in_array($requestData['payment_id'] == '59')) {
+		$paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_PAYMENT_TEXT, $cashpayment_comments);	
+		}
 		$payment->properties = $paymentProperty;
 
 		$paymentObj = $this->paymentRepository->createPayment($payment);
