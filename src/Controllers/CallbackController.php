@@ -23,6 +23,7 @@ use Novalnet\Helper\PaymentHelper;
 use Novalnet\Services\PaymentService;
 use Plenty\Plugin\Templates\Twig;
 use Novalnet\Services\TransactionService;
+use Plenty\Log\Contracts\LoggerContract;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\Mail\Contracts\MailerContract;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
