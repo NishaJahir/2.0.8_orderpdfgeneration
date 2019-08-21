@@ -311,7 +311,7 @@ class PaymentService
       * Build cash payment transaction comments
       *
       * @param array $requestData
-      * @return string
+      * 
       */
     public function getCashPaymentComments($requestData)
     {
