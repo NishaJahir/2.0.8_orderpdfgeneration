@@ -828,9 +828,13 @@ class PaymentService
 		$database = pluginApp(DataBase::class);
 		$transaction_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
 		$this->getLogger(__METHOD__)->error('db', $transaction_details);
-		$this->getLogger(__METHOD__)->error('dbbb1', $transaction_details[0]->bankDetails);
+		$this->getLogger(__METHOD__)->error('dbbbc1', json_decode($transaction_details[0]->bankDetails));
 		
-		$this->getLogger(__METHOD__)->error('dbd2', base64_decode($transaction_details[0]->bankDetails));
+		$this->getLogger(__METHOD__)->error('dbbbc2', base64_decode(json_decode($transaction_details[0]->bankDetails)));
+		
+		$this->getLogger(__METHOD__)->error('dbbbc3', json_decode(base64_decode(json_decode($transaction_details[0]->bankDetails))));
+		
+		//$this->getLogger(__METHOD__)->error('dbd2', base64_decode($transaction_details[0]->bankDetails));
 		if (!empty($transaction_details)) {
 		//Typecasting object to array
 		$transaction_details = (array)($transaction_details[0]);
