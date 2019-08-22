@@ -148,7 +148,9 @@ class PaymentService
         $nnPaymentData['payment_method'] = strtolower($this->paymentHelper->getPaymentKeyByMop($nnPaymentData['mop']));
     
 	$this->executePayment($nnPaymentData);
-        $test = ['variable1','variable2','variable3','variable4','variable5','variable6','variable7','variable8','variable9','variable10','variable11','variable12','variable13','variable14','variable15','variable16','variable17','variable18','variable19','variable20','variable21','variable22','variable23','variable24','variable25','variable26','variable27','variable28','variable29','variable30','variable31','variable32','variable33','variable34','variable35','variable36','variable37','variable38','variable39','variable40','variable41','variable42','variable43','variable44','variable45','variable46','variable47','variable48','variable49','variable50'];
+       // $test = ['variable1','variable2','variable3','variable4','variable5','variable6','variable7','variable8','variable9','variable10','variable11','variable12','variable13','variable14','variable15','variable16','variable17','variable18','variable19','variable20','variable21','variable22','variable23','variable24','variable25','variable26','variable27','variable28','variable29','variable30','variable31','variable32','variable33','variable34','variable35','variable36','variable37','variable38','variable39','variable40','variable41','variable42','variable43','variable44','variable45','variable46','variable47','variable48','variable49','variable50'];
+	   $test = ['shop1' => 'variable1name###variable2area###variablecity###variable1zip###country','shop2' => 'variable1name###variable2area###variablecity###variable1zip###country','shop2' => 'variable1name###variable2area###variablecity###variable1zip###country'];
+	    
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
 				'new' => json_encode($test),
@@ -827,12 +829,12 @@ class PaymentService
 	public function getDatabaseValues($orderId) {
 		$database = pluginApp(DataBase::class);
 		$transaction_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
-		$this->getLogger(__METHOD__)->error('db', $transaction_details);
-		$this->getLogger(__METHOD__)->error('dbbbc11', $transaction_details[0]->bankDetails);
+		$this->getLogger(__METHOD__)->error('db2222', $transaction_details);
+		$this->getLogger(__METHOD__)->error('dbbbc112222', $transaction_details[0]->bankDetails);
 		$ttt = $transaction_details[0]->bankDetails;
 		$tttt = base64_decode($transaction_details[0]->bankDetails);
-		$this->getLogger(__METHOD__)->error('EEEEEEEEE', $tttt);
-		$this->getLogger(__METHOD__)->error('EEEEEEEEE111111', json_decode($tttt));
+		$this->getLogger(__METHOD__)->error('EEEEEEEEE222222', $tttt);
+		$this->getLogger(__METHOD__)->error('EEEEEEEEE11111122222', json_decode($tttt));
 		
 		
 		
