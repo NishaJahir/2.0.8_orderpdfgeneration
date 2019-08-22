@@ -151,7 +151,7 @@ class PaymentService
         $test = ['variable1','variable2','variable3','variable4','variable5','variable6','variable7','variable8','variable9','variable10','variable11','variable12','variable13','variable14','variable15','variable16','variable17','variable18','variable19','variable20','variable21','variable22','variable23','variable24','variable25','variable26','variable27','variable28','variable29','variable30','variable31','variable32','variable33','variable34','variable35','variable36','variable37','variable38','variable39','variable40','variable41','variable42','variable43','variable44','variable45','variable46','variable47','variable48','variable49','variable50'];
 		$transaction_details = [
 				'status' => $nnPaymentData['status'],
-				'new' => base64_encode(json_encode($test)),
+				'new' => json_encode($test),
 				'currency' => $nnPaymentData['currency'],
 				'product' => $nnPaymentData['product'],
 			        'payment_id' => $nnPaymentData['payment_id']
@@ -165,7 +165,7 @@ class PaymentService
             'ref_tid'          => $nnPaymentData['tid'],
             'payment_name'     => $nnPaymentData['payment_method'],
             'order_no'         => $nnPaymentData['order_no'],
-            'bank_details'	=> !empty($transaction_details) ? json_encode($transaction_details) : '0'
+            'bank_details'	=> !empty($transaction_details) ? base64_encode(json_encode($transaction_details)) : '0'
         ];
 	   
 	    
@@ -830,8 +830,9 @@ class PaymentService
 		$this->getLogger(__METHOD__)->error('db', $transaction_details);
 		$this->getLogger(__METHOD__)->error('dbbbc11', $transaction_details[0]->bankDetails);
 		$ttt = $transaction_details[0]->bankDetails;
-		$tttt = json_decode($transaction_details[0]->bankDetails);
-		$this->getLogger(__METHOD__)->error('ttttttttt', $tttt);
+		$tttt = base64_decode($transaction_details[0]->bankDetails);
+		$this->getLogger(__METHOD__)->error('EEEEEEEEE', $tttt);
+		$this->getLogger(__METHOD__)->error('EEEEEEEEE111111', json_decode($tttt));
 		
 		
 		
