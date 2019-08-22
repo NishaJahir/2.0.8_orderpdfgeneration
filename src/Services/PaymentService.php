@@ -829,7 +829,7 @@ class PaymentService
 		$transaction_details = $database->query(TransactionLog::class)->where('orderNo', '=', $orderId)->get();
 		$this->getLogger(__METHOD__)->error('db', $transaction_details);
 		$this->getLogger(__METHOD__)->error('dbb1', $transaction_details[0]);
-		$this->getLogger(__METHOD__)->error('db1', $transaction_details[0]->bankDetails);
+		$this->getLogger(__METHOD__)->error('db1', json_decode($transaction_details[0]->bankDetails));
 		if (!empty($transaction_details)) {
 		//Typecasting object to array
 		$transaction_details = (array)($transaction_details[0]);
