@@ -140,6 +140,8 @@ class PaymentService
         $nnPaymentData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
 	 $this->getLogger(__METHOD__)->error('validate', $nnPaymentData);
 	    
+	     $this->getLogger(__METHOD__)->info('validateTT', $nnPaymentData);
+	    
 	$lang = strtolower((string)$nnPaymentData['lang']);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', null);
         
